@@ -1,18 +1,9 @@
 # INTELLIGENT WATER DROPS ALGORITHM
-
-# importing the random and math libraries
 import random, math
-
-# choice from random package is imported
-# for random choice from a list of nodes
 from random import choice
-
-# some debug output is written out to "iwd.out file"
 debug_file = open("iwd.out", 'w')
 
-
-# the example Disassembly Matrix (provided in the ASP paper)
-# made global so that it is accessible everywhere(within functions)
+# the example Disassembly Matrix
 global DM
 DM = [
      [0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0], 
@@ -20,22 +11,24 @@ DM = [
      [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0], 
      [1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]
     ]
+
 ## parameters
 # static parameters
 
-# take number of parts and directions from DM itself, so that changes to be made are reduced
+# take number of parts and directions from DM
 global no_of_parts, no_of_dirs, no_of_nodes, no_of_iwds
 no_of_parts = len(DM) # Keep these properties dependent so that changes can be easily made
 no_of_dirs = len(DM[1]) / len(DM) # ---------------do----------------#
 
+
 no_of_nodes = 2 * no_of_dirs * no_of_parts 
 no_of_iwds = no_of_parts # equal to number of parts
-
-# a parts set, useful to check whether the water drop has completed its tour
+# a parts set, useful
 global parts_set
 parts_set = set()
 for i in range(no_of_parts):
     parts_set.add(i)
+
 
 # parameters for velocity updating
 global a_v, b_v, c_v
@@ -49,18 +42,17 @@ a_s = 1
 b_s = 0.01
 c_s = 1
 
-# initial velocity and initial soil
+# initial velocity
 global init_vel, initsoil
 init_vel = 1
 init_soil = 10 # initialize the soil on every path by this amount
 
-# best tour is T_b, not still used
+# best tour is T_b
 global T_b, len_best_tour
 T_b = []
 len_best_tour = float("inf")#len(T_b)
 
 # maximum number of iterations
-# taken as an input from the user
 iter_max = int(raw_input("No of iterations > "))
 
 ## some other constants given in the algo
@@ -84,24 +76,12 @@ class iwd(object):
     # initializing the nodes and parts list and also
     # water drop's velocity and soil amount
     def __init__(self):
-        # this is the visited nodes list(order is also maintained)
         self.visited_nodes = []
-
-        #this is the visited parts list(order is also maintained)
         self.visited_parts = []
-
-        # the velocity of the water drops
         self.velocity = init_vel
-
-        # amount of soil in the water drop
         self.soil = init_soil
-
         self.tour_length = 0
-
-        # best tour preserved during the entire iterations
         self.best_tour = []
-
-        # length of the best tour(cost wise, like if direction change, length increases)
         self.best_tour_length = float("inf")
 
     # adding a node and a part number to the list
@@ -111,22 +91,16 @@ class iwd(object):
         self.visited_nodes.append(node)
         self.visited_parts.append(node[0])
 
-    # get the visited nodes till now
     def get_nodes_list(self):
         return self.visited_nodes
 
-    # get the parts used till now
     def get_parts_list(self):
         return self.visited_parts
 
-    # get the no. of parts visited
     def get_no_parts(self):
         return len(self.visited_parts)
 
-    # get the last node visited 
-    # used for evaluating the cost(change in disassembly direction)
     def get_last_node(self):
-        # If no node is visitedby the water drop(it just started), None is returned
         if len(self.visited_nodes) > 0:
             return self.visited_nodes[-1]
         else:
@@ -147,8 +121,6 @@ class iwd(object):
     def set_tour_length(self, new_length):
         self.tour_length = new_length
 
-    # Best tour during all the iterations are stored
-    # set and get method for that are implemented
     def set_best_tour(self, new_tour):
         self.best_tour = new_tour
     def set_best_tour_length(self, new_length):
