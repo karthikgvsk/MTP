@@ -3,7 +3,6 @@ import random, math
 from random import choice
 debug_file = open("iwd.out", 'w')
 
-rep_times = 10
 # the example Disassembly Matrix
 global DM
 DM = [
@@ -403,6 +402,17 @@ while iter_no <= iter_max:
                 soil_matrix[pres_soil_row][next_soil_row] = (1 - rho) * soil_amt + rho * soil_add_amt
     
 
+
+
+    # printing the sequence created
+    debug_file.write("\n----------------------\n")
+    debug_file.write("present sequences:\n")
+    for i in range(len(water_drop_list)):
+        water_drop = water_drop_list[i]
+        sequence = water_drop.get_nodes_list()
+        debug_file.write("water drop %d: \n" % i)
+        debug_file.write(str(sequence) + "\n")
+
     # updating the best tours of water, and cleaning up the water drop
     for water_drop in water_drop_list:
         tour_len = water_drop.get_tour_length()
@@ -415,10 +425,10 @@ while iter_no <= iter_max:
         water_drop.clean()
 
     #if iter_no == iter_max:
-    
+
     print "----------------------"
     print "Best sequences obtained :"
-    debug_file.write("--------------\n")
+    debug_file.write("\n\n--------------\n")
     debug_file.write("Best sequences obtained\n")
     
     for i in range(len(water_drop_list)):

@@ -440,8 +440,3 @@ while i < len(bestSeqList):
 	seq = bestSeqList[i]
 	print "ant: ", i, " bestSeq: ", bestSeqList[i]
 	i = i + 1
-	
-	
-	
-	
-	
