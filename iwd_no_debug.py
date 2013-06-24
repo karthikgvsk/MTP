@@ -8,7 +8,7 @@ import random, math
 from random import choice
 
 # some debug output is written out to "iwd.out file"
-debug_file = open("iwd.out", 'w')
+#debug_file = open("iwd.out", 'w')
 
 
 # the example Disassembly Matrix (provided in the ASP paper)
@@ -22,7 +22,7 @@ DM = [
      [1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]
     ]
 """
-DM = [[0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1], [0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]]
+DM = [[0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1], [0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]]
 ## parameters
 # static parameters
 
@@ -277,7 +277,7 @@ def get_next_possible_nodes(used_parts):
 
 # procedure starts from here
 # initialization of the water drops at their start
-# print statements embedded in the block here for debug
+# ##print statements embedded in the block here for debug
 water_drop_list = []
 for i in range(no_of_iwds):
     new_water_drop = iwd()
@@ -287,27 +287,27 @@ for i in range(no_of_iwds):
 iter_no = 1
 while iter_no <= iter_max:
     # some debug statements
-    print "-----------------------"
-    print "iter no : %d" % iter_no
-    print "The initial iwds are:"
+    ##print "-----------------------"
+    ##print "iter no : %d" % iter_no
+    ##print "The initial iwds are:"
 
-    debug_file.write("---------------\n")
-    debug_file.write("iter no: %d \n" % iter_no)
+    #debug_file.write("---------------\n")
+    #debug_file.write("iter no: %d \n" % iter_no)
 
     # initialize the water drops
 
     init_nodes = get_next_possible_nodes([])
-    debug_file.write("\nthe init nodes are: \n")
-    debug_file.write(str(init_nodes) + "\n")
+    #debug_file.write("\nthe init nodes are: \n")
+    #debug_file.write(str(init_nodes) + "\n")
     for water_drop in water_drop_list:
         # for every water drop, a random node from the starting possible nodes
         # is assigned as its start node
         node = choice(init_nodes)
         water_drop.add_node(node)
         # a debug statement
-        print water_drop.get_nodes_list(), water_drop.get_parts_list()
+        ##print water_drop.get_nodes_list(), water_drop.get_parts_list()
     # DEBUG
-    print "----"
+    ##print "----"
 
     # the list that sees whether a water drop has completed its tour
     tour_complete = [False] * len(water_drop_list)
@@ -323,7 +323,7 @@ while iter_no <= iter_max:
         for water_drop in water_drop_list:
             # getting the next feasible part
             if not tour_complete[drop_no]:
-                print "---------------------"
+                ##print "---------------------"
                 parts_visited = water_drop.get_parts_list()
                 next_poss_nodes = get_next_possible_nodes(parts_visited)
 
@@ -344,31 +344,31 @@ while iter_no <= iter_max:
                     
 
                     ### some debug statements
-                    print "------"
-                    print "water drop number: %d" % drop_no
-                    print "presently used nodes: "
-                    print water_drop.get_nodes_list()
-                    print "possible next nodes: "
-                    print next_poss_nodes
-                    print "probabilities associated: "
+                    ##print "------"
+                    ##print "water drop number: %d" % drop_no
+                    ##print "presently used nodes: "
+                    ##print water_drop.get_nodes_list()
+                    ##print "possible next nodes: "
+                    ##print next_poss_nodes
+                    ##print "probabilities associated: "
                     prob_list = ["%.3f" % x for x in prob_list]
-                    print prob_list
-                    print "node selected: "
-                    print next_node, "%.3f" % next_node_prob
+                    ##print prob_list
+                    ##print "node selected: "
+                    ##print next_node, "%.3f" % next_node_prob
                     # writing to a file
-                    debug_file.write("-----\n")
-                    debug_file.write("water drop number: %d \n" % drop_no)
-                    debug_file.write("presently used nodes: \n")
-                    debug_file.write(str(water_drop.get_nodes_list()) + "\n")
-                    debug_file.write("presently used parts: \n")
-                    debug_file.write(str(water_drop.get_parts_list()) + "\n")
-                    debug_file.write("possible next nodes\n")
-                    debug_file.write(str(next_poss_nodes) + "\n")
-                    debug_file.write("probabilities associated: \n")
-                    debug_file.write(str(prob_list) + "\n")
-                    debug_file.write("node_selected: \n")
-                    debug_file.write(str(next_node) + " " + "%.3f \n" % next_node_prob)
-                    debug_file.write("\n\n" + str(soil_matrix) + "\n\n")
+                    #debug_file.write("-----\n")
+                    #debug_file.write("water drop number: %d \n" % drop_no)
+                    #debug_file.write("presently used nodes: \n")
+                    #debug_file.write(str(water_drop.get_nodes_list()) + "\n")
+                    #debug_file.write("presently used parts: \n")
+                    #debug_file.write(str(water_drop.get_parts_list()) + "\n")
+                    #debug_file.write("possible next nodes\n")
+                    #debug_file.write(str(next_poss_nodes) + "\n")
+                    #debug_file.write("probabilities associated: \n")
+                    #debug_file.write(str(prob_list) + "\n")
+                    #debug_file.write("node_selected: \n")
+                    #debug_file.write(str(next_node) + " " + "%.3f \n" % next_node_prob)
+                    #debug_file.write("\n\n" + str(soil_matrix) + "\n\n")
                     ###
 
 
@@ -409,12 +409,12 @@ while iter_no <= iter_max:
 
                     # delta soil, change in soil in the path
                     soil_added = a_s / (b_s + c_s * time)
-                    print "soil, soil_added: "
+                    ##print "soil, soil_added: "
 
                     # matrix soil update
                     pres_soil = soil_matrix[pres_soil_row][next_soil_row]
                     soil_matrix[pres_soil_row][next_soil_row] = ((1 - rho) * pres_soil) - (rho * soil_added)
-                    print pres_soil, soil_added
+                    ##print pres_soil, soil_added
 
                     # water drop soil update
                     iwd_soil = water_drop.get_soil()
@@ -424,8 +424,8 @@ while iter_no <= iter_max:
             drop_no = drop_no + 1
 
         # debug statements
-        print "---------------\n\n"
-        debug_file.write("---------------\n\n\n\n")
+        ##print "---------------\n\n"
+        #debug_file.write("---------------\n\n\n\n")
         ##
 
         # end criterion for while loop
@@ -462,7 +462,7 @@ while iter_no <= iter_max:
             water_drop_soil = water_drop.get_soil()
             
             # debug statements
-            print "water drop soil: %d " % water_drop_soil
+            ##print "water drop soil: %d " % water_drop_soil
             #
             
             path = water_drop.get_nodes_list()
@@ -485,14 +485,14 @@ while iter_no <= iter_max:
 
 
     ###
-    # printing the sequence created
-    debug_file.write("\n----------------------\n")
-    debug_file.write("present sequences:\n")
+    # ##printing the sequence created
+    #debug_file.write("\n----------------------\n")
+    #debug_file.write("present sequences:\n")
     for i in range(len(water_drop_list)):
         water_drop = water_drop_list[i]
         sequence = water_drop.get_nodes_list()
-        debug_file.write("water drop %d: \n" % i)
-        debug_file.write(str(sequence) + "\n")
+        #debug_file.write("water drop %d: \n" % i)
+        #debug_file.write(str(sequence) + "\n")
     ###
 
     # updating the best tours of water, and cleaning up the water drop
@@ -514,32 +514,33 @@ while iter_no <= iter_max:
 
         water_drop.clean()
 
-    # printing the best sequences obtained till now
-    print "----------------------"
-    print "Best sequences obtained :"
-    debug_file.write("\n\n--------------\n")
-    debug_file.write("Best sequences obtained\n")
-    
-    for i in range(len(water_drop_list)):
-        water_drop = water_drop_list[i]
+    # ##printing the best sequences obtained till now
+    if iter_no == iter_max:
+        print "----------------------"
+        print "Best sequences obtained :"
+        #debug_file.write("\n\n--------------\n")
+        #debug_file.write("Best sequences obtained\n")
         
-        print "water drop: %d" % i
-        debug_file.write("water drop: %d" %i)
-        
-        best_tour = water_drop.get_best_tour()
-        best_tour_len = water_drop.get_best_tour_length()
-        
-        print best_tour, best_tour_len
-        debug_file.write(str(best_tour))
-        debug_file.write(str(best_tour_len))
-        debug_file.write("\n\n")
-    ##
+        for i in range(len(water_drop_list)):
+            water_drop = water_drop_list[i]
+            
+            print "water drop: %d" % i
+            #debug_file.write("water drop: %d" %i)
+            
+            best_tour = water_drop.get_best_tour()
+            best_tour_len = water_drop.get_best_tour_length()
+            
+            print best_tour, best_tour_len
+            #debug_file.write(str(best_tour))
+            #debug_file.write(str(best_tour_len))
+            #debug_file.write("\n\n")
+        ##
 
-    #print soil_matrix
-    #debug_file.write(str(soil_matrix))
+    ###print soil_matrix
+    ##debug_file.write(str(soil_matrix))
 
     iter_no = iter_no + 1
 
     # debug
-    print "-----------------------\n"
-    debug_file.write("--------------------\n\n")
+    ##print "-----------------------\n"
+    #debug_file.write("--------------------\n\n")
