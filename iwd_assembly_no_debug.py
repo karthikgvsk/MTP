@@ -7,17 +7,18 @@ from random import choice
 ### parameters
 
 
-## disassembly matrix
-"""
+# disassembly matrix
+
 DM = [
      [0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0], 
      [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
      [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0], 
      [1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]
     ]
+
 """
 DM = [[0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1], [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]]
-
+"""
 
 
 # precedence matrix
@@ -47,8 +48,10 @@ PM = [
 	 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	 ]
-
 """
+
+# contact matrix
+
 
 
 global no_of_parts, no_of_dirs, no_of_nodes
@@ -110,7 +113,7 @@ for i in range(no_of_nodes):
 		l.append(init_soil)
 	SM.append(l)
 
-print SM
+#print SM
 
 
 def soil_row_no(node):
@@ -171,13 +174,13 @@ class iwd(object):
 							row = i
 							col = j * no_of_dirs + d
 							if DM[row][col] == 1:
-								print i, j, d + 1, "interference"
+								#print i, j, d + 1, "interference"
 								pos_dir_poss = False
 
 							row = j
 							col = i * no_of_dirs + d
 							if DM[row][col] == 1:
-								print i, j, -(d + 1), "interference"
+								#print i, j, -(d + 1), "interference"
 								neg_dir_poss = False
 						# else if j is in remaining parts, 
 						# check for precedence
@@ -186,8 +189,8 @@ class iwd(object):
 
 							row = i
 							col = j
-							if PM[i][j] == 1:
-								print i, j, "precedence"
+							if PM[row][col] == 1:
+								#print i, j, "precedence"
 								pos_dir_poss = False
 								neg_dir_poss = False
 						
@@ -196,7 +199,7 @@ class iwd(object):
 					if neg_dir_poss:
 						next_poss_nodes.append((i, (d + 1)))
 
-		print "next poss nodes: ", next_poss_nodes
+		#print "next poss nodes: ", next_poss_nodes
 		if len(next_poss_nodes) > 0:		
 			if len(self.nodes) == 0:
 				node = random.choice(next_poss_nodes)
@@ -255,7 +258,7 @@ class iwd(object):
 
 				# updating soil matrix
 				SM[row][col] = (1 - p_n) * SM[row][col] - p_n * frac_soil
-				print "soil updated: ", SM[row][col]
+				#print "soil updated: ", SM[row][col]
 				self.soil = self.soil + frac_soil
 
 				return node, prob, p_list
@@ -293,17 +296,17 @@ while iter_no <= iter_max:
 	tour_complete = [False]
 
 	while tour_complete.__contains__(False):
-		print SM
+		#print SM
 		tour_complete = []
 		for water_drop in water_drop_list:
-			print "\n---"
+			#print "\n---"
 			truth = water_drop.add_next_node()
 			if (not truth) or water_drop.tour_completed():
 				tour_complete.append(True)
 			else:
 				tour_complete.append(False)
-			print "nodes: ", water_drop.nodes
-			print "----\n"
+			#print "nodes: ", water_drop.nodes
+			#print "----\n"
 
 
 	# updating the values for the present iteration
@@ -351,11 +354,16 @@ while iter_no <= iter_max:
 					SM[row][col] = (1 + p_iwd) * SM[row][col] - p_iwd * (1 / (len(water_drop.nodes) - 1)) * water_drop.soil
 
 	i = 0
+
+	print "Iteration : ", iter_no
 	for water_drop in water_drop_list:
-		print "node: ", i, "best seq: ", water_drop.best_seq
+		print "---"
+		print "node: ", i
+		print "\npresent seq : ", water_drop.nodes, len(water_drop.nodes)
+		print "\nbest seq: ", water_drop.best_seq, water_drop.best_len
+		print "---\n"
 		water_drop.clean()
 		i = i + 1
-
-
-
+	print "========\n\n"
+	
 	iter_no = iter_no + 1;
